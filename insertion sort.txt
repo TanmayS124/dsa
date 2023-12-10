@@ -1,0 +1,112 @@
+#include<iostream>
+#include<string.h>
+using namespace std;
+
+struct student {
+    int Roll_No;
+    char Name[20];
+    float SGPA;
+};
+
+void getdata(student S[20], int n) {
+    for (int i = 0; i < n; i++) {
+        cout << "Enter Roll_No, Name, SGPA: ";
+        cin >> S[i].Roll_No >> S[i].Name >> S[i].SGPA;
+    }
+}
+
+void putdata(student S[20], int n) {
+    cout << "\nRoll_No\tName\tSGPA";
+    for (int i = 0; i < n; i++)
+        cout << "\n" << S[i].Roll_No << "\t" << S[i].Name << "\t" << S[i].SGPA;
+}
+
+void insertion(student a[20], int n) {
+    for (int i = 1; i < n; i++) {
+        auto x = a[i];
+        int j = i - 1;
+        while (j >= 0 && strcmp(x.Name, a[j].Name) < 0) {
+            a[j + 1] = a[j];
+            j--;
+        }
+        a[j + 1] = x;
+    }
+}
+int partition(student s[20], int left, int right) {
+    float pivot = s[right].SGPA;
+    int i = left - 1;
+
+    for (int j = left; j < right; j++) {
+        if (s[j].SGPA >= pivot) {
+            i++;
+            swap(s[i], s[j]);
+        }
+    }
+    swap(s[i + 1], s[right]);
+    return i + 1;
+}
+
+void quicksort(student s[20], int left, int right) {
+    if (left < right) {
+        int pivot = partition(s, left, right);
+        quicksort(s, left, pivot - 1);
+        quicksort(s, pivot + 1, right);
+    }
+}
+
+int linearSearch(student values[20], int n, float Key) {
+    int flag = 0;
+    cout << "\nRoll_No\tName\tSGPA";
+    for (int i = 0; i < n; i++) {
+        if (values[i].SGPA == Key) {
+            flag = 1;
+            cout << "\n" << values[i].Roll_No << "\t" << values[i].Name << "\t" << values[i].SGPA;
+        }
+    }
+    return flag;
+}
+
+int main() {
+    struct student S[20];
+    int n, ch;
+    cout << "Enter the number of records: ";
+    cin >> n;
+
+    getdata(S, n);
+    putdata(S, n);
+
+    
+               do {
+        cout << "\n1:Quick sort(SGPA)\n2: Insertion Sort(Namewise)\n3:Linear Search(SGPA)\nEnter Your Choice: ";
+        cin >> ch;
+
+        switch (ch) {
+            case 1:
+                quicksort(S, 0, n - 1);
+                putdata(S, n);
+                cout << "First 3 Toppers";
+                cout << "\nRoll_No Name SGPA";
+                for (int i = 0; i < 3; i++) {
+                    cout << "\n" << S[i].Roll_No << "\t" << S[i].Name << "\t" << S[i].SGPA;
+                }
+                break;
+            case 2:
+                insertion(S, n);
+                putdata(S, n);
+                break;
+	 case 3: {
+                float find;
+                cout << "Enter SGPA: ";
+                cin >> find;
+                int flag;
+                flag = linearSearch(S, n, find);
+                if (flag == 0) {
+                    cout << "\nRecord Not present";
+                }
+                break;
+            }
+        }
+    } while (ch >= 1 && ch <= 3);
+
+    return 0;
+}

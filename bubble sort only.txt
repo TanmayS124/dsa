@@ -1,0 +1,61 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+struct Student {
+    int rollNumber;
+    string name;
+    float sgpa;
+};
+
+void swap(Student &a, Student &b) {
+    Student temp = a;
+    a = b;
+    b = temp;
+}
+
+void bubbleSort(Student arr[], int n) {
+    for (int i = 0; i < n - 1; ++i) {
+        for (int j = 0; j < n - i - 1; ++j) {
+            if (arr[j].rollNumber > arr[j + 1].rollNumber) {
+                swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
+}
+
+void printRollCallList(const Student arr[], int size) {
+    cout << "Roll Call List:" << endl;
+    cout << "Roll No\t\tName\t\tSGPA" << endl;
+
+    for (int i = 0; i < size; ++i) {
+        cout << arr[i].rollNumber << "\t\t" << arr[i].name << "\t\t" << arr[i].sgpa << endl;
+    }
+}
+
+int main() {
+    const int numStudents = 5;
+    Student studentDatabase[numStudents];
+
+    cout << "Enter details for " << numStudents << " students:" << endl;
+    for (int i = 0; i < numStudents; ++i) {
+        cout << "Student " << i + 1 << " - Roll No: ";
+        cin >> studentDatabase[i].rollNumber;
+
+        cout << "Student " << i + 1 << " - Name: ";
+        cin.ignore();
+        getline(cin, studentDatabase[i].name);
+
+        cout << "Student " << i + 1 << " - SGPA: ";
+        cin >> studentDatabase[i].sgpa;
+
+        cout << endl;
+    }
+
+    bubbleSort(studentDatabase, numStudents);
+
+    printRollCallList(studentDatabase, numStudents);
+
+    return 0;
+}
